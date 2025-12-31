@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OPG — About</title>
+<style>
+:root{
+  --bg:#050712;
+  --ink:#fff;
+  --muted:rgba(255,255,255,.74);
+  --paper:#ffffff;
+  --ink2:#111;
+  --muted2:rgba(17,17,17,.64);
+  --line:rgba(17,17,17,.10);
+  --shadow:0 18px 60px rgba(0,0,0,.14);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+
+/* Top controls */
+.topbar{
+  position:fixed;top:20px;left:20px;right:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  z-index:90;pointer-events:none;
+}
+.pill{
+  pointer-events:auto;background:#f4f4f4;color:#111;border-radius:999px;
+  padding:10px 16px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.hamburger{width:20px;height:14px;display:flex;flex-direction:column;justify-content:space-between;}
+.hamburger span{height:2px;background:#111;border-radius:2px;}
+.langToggle{font-size:12px;letter-spacing:.12em;text-transform:uppercase;user-select:none;cursor:pointer;}
+.brandLink{
+  color:inherit;
+  text-decoration:none;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+
+/* Hero */
+.hero{
+  min-height:100vh;
+  padding:84px 42px 18px;
+  background:
+    radial-gradient(1100px 520px at 70% 25%, rgba(110,120,255,.22), transparent 58%),
+    radial-gradient(900px 520px at 20% 70%, rgba(140,90,255,.14), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), transparent 35%);
+}
+.wrap{max-width:1180px;margin:0 auto;width:100%;}
+.kicker{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);
+}
+h1{margin:8px 0 0;font-size:44px;line-height:1.02;font-weight:520;letter-spacing:-.02em;}
+.lede{margin:12px 0 0;max-width:78ch;color:var(--muted);font-size:14.5px;line-height:1.55;}
+
+/* Above-fold slab (single screen feel) */
+.slab{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:12px;
+  align-items:stretch;
+}
+.card{
+  border-radius:22px;
+  padding:16px 16px 14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 18px 60px rgba(0,0,0,.26);
+}
+.card.light{
+  background:#fff;
+  color:var(--ink2);
+  border:1px solid rgba(17,17,17,.10);
+  box-shadow:0 18px 60px rgba(0,0,0,.08);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.18);
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.78);
+}
+.card.light .eyebrow{
+  background:rgba(17,17,17,.06);
+  border:1px solid rgba(17,17,17,.10);
+  color:rgba(17,17,17,.55);
+}
+.h2{
+  margin:10px 0 0;
+  font-size:19px;
+  font-weight:720;
+  letter-spacing:-.01em;
+}
+.p{
+  margin:8px 0 0;
+  color:rgba(255,255,255,.78);
+  line-height:1.5;
+  font-size:12.8px;
+}
+.card.light .p{color:rgba(17,17,17,.64);}
+.keyline{
+  margin-top:14px;
+  border-top:1px solid rgba(255,255,255,.14);
+  padding-top:12px;
+}
+.card.light .keyline{border-top:1px solid rgba(17,17,17,.10);}
+
+/* Big stats (make it visible) */
+.bigStats{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.bigStat{
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:16px;
+  padding:10px 10px 8px;
+  background:rgba(255,255,255,.06);
+}
+.card.light .bigStat{
+  border:1px solid rgba(17,17,17,.10);
+  background:#fff;
+}
+.bigStat .num{font-size:22px;font-weight:780;letter-spacing:-.02em}
+.bigStat .lab{
+  margin-top:6px;
+  color:rgba(255,255,255,.70);
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;line-height:1.25;
+}
+.card.light .bigStat .lab{color:rgba(17,17,17,.62);}
+
+/* Clients list */
+.list{margin:12px 0 0;padding:0;list-style:none;}
+.list li{
+  padding:8px 0;
+  border-top:1px solid rgba(17,17,17,.10);
+  color:rgba(17,17,17,.70);
+  font-size:12.8px;line-height:1.45;
+}
+.list li:first-child{border-top:none;padding-top:0}
+.list strong{color:rgba(17,17,17,.90)}
+
+/* Body (kept minimal, not "below lost") */
+.paper{
+  background:var(--paper);
+  color:var(--ink2);
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:22px 0 0;
+}
+.section{padding:22px 22px 34px;}
+.sectionHeader{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.hTitle{
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:rgba(17,17,17,.55);
+}
+.hSub{color:rgba(17,17,17,.55);font-size:12.5px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.bodyCard{
+  border:1px solid rgba(17,17,17,.10);
+  border-radius:20px;
+  padding:16px 18px 14px;
+  background:linear-gradient(180deg, rgba(17,17,17,.02), rgba(17,17,17,.00));
+  box-shadow:0 18px 60px rgba(0,0,0,.06);
+}
+.bodyCard h3{margin:0;font-size:18px;font-weight:680;letter-spacing:-.01em}
+.bodyCard p{margin:10px 0 0;color:rgba(17,17,17,.64);line-height:1.58;font-size:13.8px}
+
+/* CTA */
+.cta{
+  padding:26px 22px 54px;
+  background:
+    radial-gradient(900px 420px at 20% 30%, rgba(110,120,255,.10), transparent 60%),
+    radial-gradient(900px 520px at 80% 70%, rgba(140,90,255,.08), transparent 62%),
+    #fff;
+  border-top:1px solid rgba(17,17,17,.06);
+}
+.ctaBox{
+  max-width:1180px;margin:0 auto;
+  border:1px solid rgba(17,17,17,.10);
+  border-radius:24px;
+  padding:18px 18px 16px;
+  box-shadow:var(--shadow);
+  background:#fff;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.ctaBox .big{margin:0;font-size:18px;font-weight:720;letter-spacing:-.01em}
+.ctaBox .small{margin:8px 0 0;color:rgba(17,17,17,.64);font-size:13.5px;line-height:1.5}
+.btn{
+  border:none;background:#111;color:#fff;padding:12px 16px;border-radius:999px;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
+}
+.btn:active{transform:translateY(1px)}
+
+/* footer */
+.footerRow{background:#fff;color:rgba(17,17,17,.55);font-size:12px;border-top:1px solid rgba(17,17,17,.08);}
+.footerInner{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+
+
+}
+
+
+/* white contact strip (quiet, premium) */
+.contactStrip{
+  position:relative;
+  margin-top:14px;
+  border-radius:22px;
+  overflow:hidden;
+}
+.contactInner{
+  background:#fff;
+  color:#111;
+  border:1px solid rgba(17,17,17,.10);
+  border-radius:22px;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  box-shadow:0 18px 60px rgba(0,0,0,.10);
+}
+.contactTitle{
+  font-size:13.5px;
+  font-weight:720;
+  letter-spacing:-.01em;
+}
+.contactMeta{
+  margin-top:6px;
+  font-size:12px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:rgba(17,17,17,.55);
+}
+.btn.light{
+  background:#111;
+  color:#fff;
+}
+@media (max-width:980px){
+  .contactInner{flex-direction:column;align-items:flex-start}
+}
+
+
+/* minimalist statement */
+.statement{
+  margin:18px auto 0;
+  text-align:left;
+  max-width:1180px;
+  padding:0 56px;
+}
+.statementInner{
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.14);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.statement .line{
+  font-size:14px;
+  font-weight:520;
+  letter-spacing:.02em;
+  color:rgba(255,255,255,.82);
+}
+.statement .mail{
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.55);
+}
+.btn.min{
+  padding:10px 14px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;
+}
+.btn.min:hover{background:rgba(255,255,255,.14);}
+@media (max-width:980px){
+  .statement{padding:0 20px;}
+  .statementInner{gap:10px;}
+}
+
+.statementRight{
+  text-align:right;
+}
+@media (max-width:980px){
+  .statementRight{text-align:left;}
+}
+
+
+/* reveal */
+.reveal{opacity:0; transform:translateY(10px); transition:opacity .55s ease, transform .55s ease;}
+.reveal.in{opacity:1; transform:none;}
+@media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+
+/* menu overlay */
+.menuOverlay{position:fixed;inset:0;background:rgba(5,7,18,.75);backdrop-filter:blur(4px);color:#111;display:none;z-index:9999;}
+.menuOverlay.open{display:block}
+.menuHeader{position:absolute;left:0;top:0;width:320px;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid #e6e6e6;background:#f7f7f7;}
+.menuHeader .brand{font-weight:700;letter-spacing:.04em;text-decoration:none;color:inherit;}
+.menuHeader .close{
+  width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;border:1px solid #e6e6e6;background:#fff;font-size:22px;line-height:1;
+}
+.menuBody{position:absolute;left:0;top:72px;bottom:0;width:320px;background:#f7f7f7;display:flex;flex-direction:column;}
+.menuLeft{padding:28px;flex:1;}
+.menuLeft a{display:block;text-decoration:none;color:#111;font-size:18px;font-weight:600;padding:12px 0;}
+.menuLeft a:hover{opacity:.75}
+.menuLeft .lang{margin-top:22px;font-size:14px;color:#444;letter-spacing:.08em;text-transform:uppercase;}
+.menuRight{display:none;}
+
+/* Responsive */
+@media (max-width:980px){
+  .hero{padding:96px 20px 22px}
+  h1{font-size:40px}
+  .slab{grid-template-columns:1fr}
+  .bigStats{grid-template-columns:1fr 1fr}
+  .grid{grid-template-columns:1fr}
+  .menuHeader{width:280px}
+  .menuBody{width:280px}
+}
+@media (max-width:640px){
+  .menuHeader{width:85vw;max-width:320px}
+  .menuBody{width:85vw;max-width:320px}
+}
+
+
+/* i18n toggle */
+body[data-lang="en"] .tr{display:none !important;}
+body[data-lang="tr"] .en{display:none !important;}
+
+
+
+/* --- Visual polish: Menu Right + Footer --- */
+.menuRight{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:18px;
+  padding:22px 26px;
+  box-shadow:0 18px 60px rgba(0,0,0,.10);
+  align-self:start;
+}
+.menuRight h3{font-size:22px; letter-spacing:-.01em;}
+.menuRight p{font-size:15px; color:rgba(17,17,17,.70);}
+
+.footerRow{
+  padding-top:14px;
+  color:rgba(17,17,17,.60);
+}
+.footerRow a{
+  color:inherit;
+  text-decoration:none;
+}
+.footerRow a:hover{
+  text-decoration:underline;
+}
+
+
+
+
+/* --- About page content blocks --- */
+.lower{
+  background:#ffffff;
+  color:#111;
+  padding:26px 0 36px;
+}
+.lower .wrap{max-width:980px;margin:0 auto;padding:0 42px;}
+.slabGrid{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.slabCard{
+  border-radius:22px;
+  padding:18px 18px 16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 18px 60px rgba(0,0,0,.22);
+}
+.slabCard .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.70);}
+.slabCard h3{margin:10px 0 0;font-size:22px;line-height:1.12;font-weight:620;letter-spacing:-.01em;}
+.slabCard p{margin:10px 0 0;color:rgba(255,255,255,.74);font-size:13.5px;line-height:1.55;}
+
+.metricGrid{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.metric{
+  border-radius:16px;
+  padding:12px 12px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+}
+.metric .n{font-size:22px;font-weight:700;letter-spacing:-.02em;}
+.metric .l{margin-top:4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.70);}
+
+.miniList{margin-top:14px;display:grid;gap:10px;}
+.miniRow{
+  border-radius:16px;
+  padding:12px 12px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+}
+.miniRow .h{font-weight:650;font-size:13px;}
+.miniRow .d{margin-top:6px;color:rgba(255,255,255,.74);font-size:12.8px;line-height:1.5;}
+
+.clientList{margin-top:12px;display:grid;gap:10px;}
+.clientItem{
+  border-radius:16px;
+  padding:12px 12px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+  font-size:13px;
+  color:rgba(255,255,255,.82);
+}
+
+.strip{
+  border-radius:22px;
+  padding:16px 16px;
+  border:1px solid rgba(17,17,17,.10);
+  background:#fff;
+  box-shadow:0 18px 60px rgba(0,0,0,.10);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+}
+.strip .s1{font-weight:650;letter-spacing:-.01em;}
+.strip a{color:inherit;text-decoration:none;}
+.strip a:hover{text-decoration:underline;}
+
+@media (max-width:980px){
+  .lower .wrap{padding:0 20px;}
+  .slabGrid{grid-template-columns:1fr;}
+}
+
+
+
+
+/* i18n hard override */
+body[data-lang="en"] .en{display:inline !important;}
+body[data-lang="tr"] .tr{display:inline !important;}
+body[data-lang="en"] .tr{display:none !important;}
+body[data-lang="tr"] .en{display:none !important;}
+
+
+
+
+/* --- Responsive fixes (base) --- */
+@media (max-width: 980px){
+  .topbar{left:14px; right:14px; top:14px;}
+  .wrap{max-width:980px; padding-left:20px !important; padding-right:20px !important;}
+  .hero{padding-left:20px; padding-right:20px;}
+  .menuBody{grid-template-columns:1fr !important;}
+  .menuLeft{border-right:none !important; border-bottom:1px solid #e6e6e6 !important;}
+}
+@media (max-width: 640px){
+  h1{font-size:36px !important; line-height:1.04 !important;}
+}
+
+
+
+
+/* --- about: responsive fix --- */
+@media (max-width: 980px){
+  .slabGrid{grid-template-columns:1fr !important;}
+  .metricGrid{grid-template-columns:1fr 1fr !important;}
+}
+@media (max-width: 640px){
+  .metricGrid{grid-template-columns:1fr !important;}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+<div aria-label="Menu" class="pill" id="menuTrigger">
+<div class="hamburger"><span></span><span></span><span></span></div>
+<a class="brandLink" href="index.html" onclick="event.stopPropagation()">OPG</a>
+</div>
+<div aria-label="Language toggle" class="pill langToggle" role="button" tabindex="0">EN / TR</div>
+</div>
+<section class="hero">
+<div class="wrap reveal"><div class="kicker"><span class="en">ABOUT</span><span class="tr">ABOUT</span></div><h1><span class="en">Senior-led teams for complex business transformation.</span><span class="tr">Karmaşık iş dönüşümleri için senior-led ekipler.</span></h1><p class="lede"><span class="en">One Point is a senior-led structure designed to work on high-complexity business transformations. Our focus is not running operations, but understanding the core of the business, designing the right solution, and delivering outcomes.</span><span class="tr">One Point, yüksek karmaşıklıktaki iş dönüşümlerinde çalışmak üzere tasarlanmış, senior-led bir yapıdır. Odağımız operasyon yürütmek değil; işin özünü anlamak, doğru çözümü tasarlamak ve sonuç almaktır.</span></p><div class="slabGrid"><div class="slabCard"><div class="k"><span class="en">OUR TEAM &amp; CULTURE</span><span class="tr">EKİBİMİZ &amp; KÜLTÜRÜMÜZ</span></div><h3><span class="en">Compact core. Scalable expertise.</span><span class="tr">Kompakt çekirdek. Ölçeklenebilir uzmanlık.</span></h3><p><span class="en">We operate with an in-house core team of around 40 senior professionals. In addition, we activate a partner hub of roughly 200 specialists, bringing the right expertise at the right moment. Our strategy and design teams work in agile formats to lead discovery and ideation.</span><span class="tr">Yaklaşık 40 kişilik senior in-house çekirdek ekiple çalışırız. Buna ek olarak, yaklaşık 200 kişilik partner hub sayesinde doğru uzmanlığı doğru zamanda devreye alırız. Strateji ve tasarım ekiplerimiz, çevik çalışma biçimleriyle keşif ve fikir geliştirme süreçlerini yürütür.</span></p><div class="metricGrid"><div class="metric"><div class="n"><span class="en">40</span><span class="tr">40</span></div><div class="l"><span class="en">In-house Core Team</span><span class="tr">In-house Çekirdek Ekip</span></div></div><div class="metric"><div class="n"><span class="en">200</span><span class="tr">200</span></div><div class="l"><span class="en">Partner Hub</span><span class="tr">Partner Hub</span></div></div><div class="metric"><div class="n"><span class="en">25+ years</span><span class="tr">25+ years</span></div><div class="l"><span class="en">Experience</span><span class="tr">Deneyim</span></div></div><div class="metric"><div class="n"><span class="en">250+</span><span class="tr">250+</span></div><div class="l"><span class="en">Annual Engagements</span><span class="tr">Yıllık Proje</span></div></div></div><div class="miniList"><div class="miniRow"><div class="h"><span class="en">Focus</span><span class="tr">Odak</span></div><div class="d"><span class="en">We focus on business objectives and measurable outcomes, rather than day-to-day operations.</span><span class="tr">Günlük operasyonlardan ziyade, iş hedeflerine ve ölçülebilir sonuçlara odaklanırız.</span></div></div><div class="miniRow"><div class="h"><span class="en">Method</span><span class="tr">Yöntem</span></div><div class="d"><span class="en">We work through co-creation, combining Design Thinking, agile ways of working, and iterative delivery models.</span><span class="tr">Design Thinking, çevik çalışma yaklaşımları ve iteratif teslimat modellerini bir araya getiren birlikte üretim anlayışıyla çalışırız.</span></div></div><div class="miniRow"><div class="h"><span class="en">Creativity</span><span class="tr">Yaratıcılık</span></div><div class="d"><span class="en">We bring creativity into problem framing, scenario exploration, and solution design.</span><span class="tr">Yaratıcılığı; problem tanımı, senaryo geliştirme ve çözüm tasarımı süreçlerinin merkezine alırız.</span></div></div></div></div><div class="slabCard"><div class="k"><span class="en">OUR CLIENTS</span><span class="tr">MÜŞTERİLERİMİZ</span></div><h3><span class="en">Organizations operating at scale and complexity.</span><span class="tr">Yüksek karmaşıklık ve hacimde faaliyet gösteren kurumlar.</span></h3><p><span class="en">We typically work with organizations operating at high volume, with multiple stakeholders and regulatory sensitivity.</span><span class="tr">Genellikle yüksek hacimli, çok paydaşlı ve regülasyon hassasiyeti bulunan yapılarda çalışırız.</span></p><div class="clientList"><div class="clientItem"><span class="en">Banks and financial institutions</span><span class="tr">Bankalar ve finansal kurumlar</span></div><div class="clientItem"><span class="en">Telecom and digital platform organizations</span><span class="tr">Telekom ve dijital platform organizasyonları</span></div><div class="clientItem"><span class="en">Fintech and payment / loyalty ecosystems</span><span class="tr">Fintech ile ödeme / sadakat ekosistemleri</span></div><div class="clientItem"><span class="en">Large-scale retail and consumer businesses</span><span class="tr">Büyük ölçekli perakende ve tüketici odaklı yapılar</span></div></div></div></div></div></section><section class="lower"><div class="wrap"><div class="strip"><div class="s1"><span class="en">When it matters, we are there.</span><span class="tr">Önemli olduğunda, oradayız.</span></div><div><a href="mailto:contact@onepoint.global"><span class="en">contact@onepoint.global</span><span class="tr">contact@onepoint.global</span></a></div></div><div class="footerRow"><div><span class="en">© One Point Global</span><span class="tr">© One Point Global</span></div><div><a href="mailto:hello@onepoint.global"><span class="en">hello@onepoint.global</span><span class="tr">hello@onepoint.global</span></a></div></div></div></section>
+<!-- Menu Overlay -->
+<div class="menuOverlay" id="menu">
+<div class="menuHeader">
+<a class="brand" href="index.html">OPG</a>
+<div aria-label="Close menu" class="close" id="menuClose">×</div>
+</div>
+<div class="menuBody">
+<nav aria-label="Menu" class="menuLeft">
+<a href="index.html" onclick="closeMenu()"><span class="en">Home</span><span class="tr">Ana sayfa</span></a>
+<a href="what-we-do.html" onclick="closeMenu()"><span class="en">What we do</span><span class="tr">Ne yapıyoruz</span></a>
+<div class="lang">TR</div>
+</nav>
+<div class="menuRight">
+<h3><span class="en">Senior-led. Ready for complexity.</span><span class="tr">Senior-led. Karmaşıklığa hazır.</span></h3>
+<p><span class="en">A compact core, the right specialist partners at the right time, and an outcome-driven way of working.</span><span class="tr">Kompakt bir çekirdek yapı, doğru anda devreye giren uzman partnerler ve sonuç odaklı bir çalışma biçimi.</span></p>
+</div>
+</div>
+</div>
+<script>
+/* menu */
+const menu = document.getElementById('menu');
+const trigger = document.getElementById('menuTrigger');
+const closeBtn = document.getElementById('menuClose');
+function openMenu(){ menu.classList.add('open'); }
+function closeMenu(){ menu.classList.remove('open'); }
+trigger?.addEventListener('click', openMenu);
+closeBtn?.addEventListener('click', closeMenu);
+menu?.addEventListener('click', (e)=>{ if(e.target === menu) closeMenu(); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
+
+/* reveal */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+
+/* i18n */
+(function(){
+  const toggle = document.querySelector('.langToggle');
+  function setLang(lang){
+    document.body.setAttribute('data-lang', lang);
+    try{ localStorage.setItem('lang', lang); }catch(e){}
+  }
+  let saved = 'en';
+  try{
+    saved = localStorage.getItem('lang') || saved;
+  }catch(e){}
+  if(!saved){
+    const nav = (navigator.language || '').toLowerCase();
+    saved = nav.startsWith('tr') ? 'tr' : 'en';
+  }
+  setLang(saved);
+
+  function flip(){
+    const cur = document.body.getAttribute('data-lang') || 'en';
+    setLang(cur === 'en' ? 'tr' : 'en');
+  }
+  if(toggle){
+    toggle.addEventListener('click', flip);
+    toggle.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(); }
+    });
+  }
+})();
+
+</script>
+</body>
+</html>

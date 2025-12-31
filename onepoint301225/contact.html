@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OPG – Contact</title>
+<style>
+:root{
+  --bg:#050712;
+  --ink:#fff;
+  --muted:rgba(255,255,255,.74);
+  --shadow:0 18px 60px rgba(0,0,0,.28);
+  --radius:22px;
+  --paper:#ffffff;
+  --ink2:#111;
+  --muted2:rgba(17,17,17,.64);
+  --line:rgba(17,17,17,.10);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+/* top controls */
+.topbar{
+  position:fixed;top:20px;left:20px;right:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  z-index:90;pointer-events:none;
+}
+.pill{
+  pointer-events:auto;background:#f4f4f4;color:#111;border-radius:999px;
+  padding:10px 16px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.hamburger{width:20px;height:14px;display:flex;flex-direction:column;justify-content:space-between;}
+.hamburger span{height:2px;background:#111;border-radius:2px;}
+.langToggle{font-size:12px;letter-spacing:.12em;text-transform:uppercase;user-select:none;cursor:pointer;}
+.brandLink{
+  color:inherit;
+  text-decoration:none;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+
+.hero{
+  min-height:100vh;
+  padding:92px 42px 22px;
+  background:
+    radial-gradient(1100px 520px at 70% 25%, rgba(110,120,255,.22), transparent 58%),
+    radial-gradient(900px 520px at 20% 70%, rgba(140,90,255,.14), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), transparent 35%);
+}
+.wrap{max-width:980px;margin:0 auto;width:100%;}
+.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);}
+h1{margin:10px 0 0;font-size:44px;line-height:1.02;font-weight:520;letter-spacing:-.02em;}
+.lede{margin:12px 0 0;max-width:78ch;color:var(--muted);font-size:14.5px;line-height:1.55;}
+
+.card{
+  margin-top:18px;
+  border-radius:22px;
+  padding:18px 18px 16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 18px 60px rgba(0,0,0,.26);
+}
+.row{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+.chip{
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  color:rgba(255,255,255,.86);
+  font-size:12px;
+  letter-spacing:.02em;
+}
+a{color:#fff;text-decoration:none}
+a:hover{opacity:.85}
+
+/* menu overlay */
+.menuOverlay{position:fixed;inset:0;background:rgba(5,7,18,.75);backdrop-filter:blur(4px);color:#111;display:none;z-index:9999;}
+.menuOverlay.open{display:block}
+.menuHeader{position:absolute;left:0;top:0;width:320px;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid #e6e6e6;background:#f7f7f7;}
+.menuHeader .brand{font-weight:700;letter-spacing:.04em;text-decoration:none;color:inherit;}
+.menuHeader .close{
+  width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;border:1px solid #e6e6e6;background:#fff;font-size:22px;line-height:1;
+}
+.menuBody{position:absolute;left:0;top:72px;bottom:0;width:320px;background:#f7f7f7;display:flex;flex-direction:column;}
+.menuLeft{padding:28px;flex:1;}
+.menuLeft a{display:block;text-decoration:none;color:#111;font-size:18px;font-weight:600;padding:12px 0;}
+.menuLeft a:hover{opacity:.75}
+.menuLeft .lang{margin-top:22px;font-size:14px;color:#444;letter-spacing:.08em;text-transform:uppercase;}
+.menuRight{display:none;}
+
+@media (max-width:980px){
+  .hero{padding:92px 20px 18px}
+  h1{font-size:40px}
+  .menuHeader{width:280px}
+  .menuBody{width:280px}
+}
+@media (max-width:640px){
+  .menuHeader{width:85vw;max-width:320px}
+  .menuBody{width:85vw;max-width:320px}
+}
+
+
+/* i18n toggle */
+body[data-lang="en"] .tr{display:none !important;}
+body[data-lang="tr"] .en{display:none !important;}
+
+
+
+/* --- Visual polish: Menu Right + Footer --- */
+.menuRight{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:18px;
+  padding:22px 26px;
+  box-shadow:0 18px 60px rgba(0,0,0,.10);
+  align-self:start;
+}
+.menuRight h3{font-size:22px; letter-spacing:-.01em;}
+.menuRight p{font-size:15px; color:rgba(17,17,17,.70);}
+
+.footerRow{
+  padding-top:14px;
+  color:rgba(17,17,17,.60);
+}
+.footerRow a{
+  color:inherit;
+  text-decoration:none;
+}
+.footerRow a:hover{
+  text-decoration:underline;
+}
+
+
+
+
+/* i18n hard override */
+body[data-lang="en"] .en{display:inline !important;}
+body[data-lang="tr"] .tr{display:inline !important;}
+body[data-lang="en"] .tr{display:none !important;}
+body[data-lang="tr"] .en{display:none !important;}
+
+
+
+
+/* --- Responsive fixes (base) --- */
+@media (max-width: 980px){
+  .topbar{left:14px; right:14px; top:14px;}
+  .wrap{max-width:980px; padding-left:20px !important; padding-right:20px !important;}
+  .hero{padding-left:20px; padding-right:20px;}
+  .menuBody{grid-template-columns:1fr !important;}
+  .menuLeft{border-right:none !important; border-bottom:1px solid #e6e6e6 !important;}
+}
+@media (max-width: 640px){
+  h1{font-size:36px !important; line-height:1.04 !important;}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+<div aria-label="Menu" class="pill" id="menuTrigger">
+<div class="hamburger"><span></span><span></span><span></span></div>
+<a class="brandLink" href="index.html" onclick="event.stopPropagation()">OPG</a>
+</div>
+<div aria-label="Language toggle" class="pill langToggle" role="button" tabindex="0">EN / TR</div>
+</div>
+<section class="hero">
+<div class="wrap">
+<div class="kicker"><span class="en">CONTACT</span><span class="tr">İLETİŞİM</span></div>
+<h1><span class="en">Let’s talk.</span><span class="tr">Konuşalım.</span></h1>
+<p class="lede"><span class="en">For introductions, partnerships, or a focused discussion on complex change — reach us below.</span><span class="tr">Tanışma, iş birliği veya karmaşık dönüşümler üzerine odaklı bir görüşme için bize ulaşın.</span></p>
+<div class="card">
+<div class="row">
+<div class="chip"><strong><span class="en">Email:</span><span class="tr">E-posta:</span></strong> <a href="mailto:hello@onepoint.global">hello@onepoint.global</a></div>
+<div class="chip"><strong><span class="en">Location:</span><span class="tr">Lokasyon:</span></strong> Istanbul / Global</div>
+<div class="chip"><strong><span class="en">Response:</span><span class="tr">Geri dönüş:</span></strong> <span class="en">24–48h (typical)</span><span class="tr">24–48h (genelde)</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Menu Overlay -->
+<div class="menuOverlay" id="menu">
+<div class="menuHeader">
+<a class="brand" href="index.html">OPG</a>
+<div aria-label="Close menu" class="close" id="menuClose">×</div>
+</div>
+<div class="menuBody">
+<nav aria-label="Menu" class="menuLeft">
+<a href="index.html" onclick="closeMenu()"><span class="en">Home</span><span class="tr">Ana sayfa</span></a>
+<a href="about.html" onclick="closeMenu()"><span class="en">About</span><span class="tr">Hakkımızda</span></a>
+<a href="what-we-do.html" onclick="closeMenu()"><span class="en">What we do</span><span class="tr">Ne yapıyoruz</span></a>
+<div class="lang">EN / TR</div>
+</nav>
+<div class="menuRight">
+<h3>One accountability. Multiple mechanisms.</h3>
+<p>In-house capability, partner hub, and products — assembled around the work, governed as one system.</p>
+</div>
+</div>
+</div>
+<script>
+const menu = document.getElementById('menu');
+const trigger = document.getElementById('menuTrigger');
+const closeBtn = document.getElementById('menuClose');
+function openMenu(){ menu.classList.add('open'); }
+function closeMenu(){ menu.classList.remove('open'); }
+trigger?.addEventListener('click', openMenu);
+closeBtn?.addEventListener('click', closeMenu);
+menu?.addEventListener('click', (e)=>{ if(e.target === menu) closeMenu(); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
+
+
+/* i18n */
+(function(){
+  const toggle = document.querySelector('.langToggle');
+  function setLang(lang){
+    document.body.setAttribute('data-lang', lang);
+    try{ localStorage.setItem('lang', lang); }catch(e){}
+  }
+  let saved = 'en';
+  try{
+    saved = localStorage.getItem('lang') || saved;
+  }catch(e){}
+  if(!saved){
+    const nav = (navigator.language || '').toLowerCase();
+    saved = nav.startsWith('tr') ? 'tr' : 'en';
+  }
+  setLang(saved);
+
+  function flip(){
+    const cur = document.body.getAttribute('data-lang') || 'en';
+    setLang(cur === 'en' ? 'tr' : 'en');
+  }
+  if(toggle){
+    toggle.addEventListener('click', flip);
+    toggle.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(); }
+    });
+  }
+})();
+
+</script>
+</body>
+</html>

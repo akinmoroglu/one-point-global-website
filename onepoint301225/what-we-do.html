@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OPG – One Point Global</title>
+<style>
+:root{
+  --bg:#050712;
+  --ink:#fff;
+  --muted:rgba(255,255,255,.72);
+  --shadow:0 18px 60px rgba(0,0,0,.28);
+  --radius:22px;
+
+  --paper:#ffffff;
+  --line:rgba(17,17,17,.10);
+  --ink2:#111;
+  --muted2:rgba(17,17,17,.66);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+
+/* top controls */
+.topbar{
+  position:fixed;top:20px;left:20px;right:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  z-index:90;pointer-events:none;
+}
+.pill{
+  pointer-events:auto;background:#f4f4f4;color:#111;border-radius:999px;
+  padding:10px 16px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.hamburger{width:20px;height:14px;display:flex;flex-direction:column;justify-content:space-between;}
+.hamburger span{height:2px;background:#111;border-radius:2px;}
+.langToggle{font-size:12px;letter-spacing:.12em;text-transform:uppercase;user-select:none;cursor:pointer;}
+.brandLink{
+  color:inherit;
+  text-decoration:none;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+
+
+/* Landing (hero + intro) should feel like one screen */
+.landing{
+  min-height:90vh;
+  display:flex;
+  flex-direction:column;
+}
+.landing .hero{flex:0 0 auto;}
+.landing .intro{
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.landing .intro .wrap{padding-top:4px;}
+@media (max-width:980px){
+  .landing{min-height:auto}
+  .landing .intro{justify-content:flex-start}
+}
+
+/* HERO */
+.hero{
+  padding:80px 56px 20px;
+  background:
+    radial-gradient(1100px 520px at 70% 25%, rgba(110,120,255,.22), transparent 58%),
+    radial-gradient(900px 520px at 20% 70%, rgba(140,90,255,.14), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), transparent 35%);
+}
+.heroInner{
+  max-width:1180px;margin:0 auto;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:32px;
+  align-items:center;
+}
+.hero h1{margin:0;font-size:48px;line-height:1.02;font-weight:520;letter-spacing:-.02em;}
+.hero p{margin:10px 0 0;max-width:74ch;color:var(--muted);font-size:15px;line-height:1.5;}
+
+/* Hero Info - MODEL bölümü */
+.heroInfo{
+  margin-top:24px;
+  padding:20px 22px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  backdrop-filter:blur(10px);
+}
+.heroTag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.20);
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:650;
+  color:rgba(255,255,255,.95);
+}
+.heroText{
+  margin-top:12px;
+  color:rgba(255,255,255,.88);
+  font-size:13.5px;
+  line-height:1.65;
+}
+.heroText strong{
+  font-weight:650;
+  color:#fff;
+}
+
+.heroCard{
+  border-radius:var(--radius);
+  overflow:hidden;
+  position:relative;
+  box-shadow:var(--shadow);
+  background:
+    radial-gradient(900px 520px at 50% 50%, rgba(110,120,255,.18), transparent 65%),
+    linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+  min-height:380px;
+}
+.heroCard.hasImage{
+  background:var(--herocard-url) center/cover no-repeat;
+}
+.heroCard.hasImage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(5,7,18,.15) 0%, rgba(5,7,18,.35) 100%);
+  z-index:0;
+}
+.heroCard > *{position:relative;z-index:1;}
+
+/* entrance slides */
+.heroSlideL{animation:slideInLeft .70s cubic-bezier(.2,.9,.2,1) both;}
+.heroSlideR{animation:slideInRight .75s cubic-bezier(.2,.9,.2,1) both;}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-18px);}to{opacity:1;transform:none;}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(18px);}to{opacity:1;transform:none;}}
+
+/* hero ticker */
+.heroTicker{
+  padding:8px 0 10px;
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.00));
+  border-top:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  overflow:hidden;
+}
+.tickerTrack{
+  display:flex;
+  gap:14px;
+  width:max-content;
+  padding-left:22px;
+  animation:marquee 18s linear infinite;
+  color:rgba(255,255,255,.78);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:11px;
+}
+.tickerTrack span{font-weight:650;}
+.tickerTrack i{font-style:normal;opacity:.55}
+@keyframes marquee{
+  from{transform:translateX(100%);}
+  to{transform:translateX(-50%);}
+}
+@media (prefers-reduced-motion:reduce){
+  .heroSlideL,.heroSlideR{animation:none;}
+  .tickerTrack{animation:none;}
+}
+
+
+/* White intro */
+.intro{
+  background:var(--paper);
+  color:var(--ink2);
+  padding:12px 22px 8px;
+}
+.wrap{max-width:1180px;margin:0 auto;width:100%;}
+.kicker{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(17,17,17,.60);text-align:center}
+.title{margin:6px 0 0;text-align:center;font-size:32px;line-height:1.05;font-weight:520;letter-spacing:-.02em}
+.sub{margin:8px auto 0;text-align:center;max-width:90ch;color:var(--muted2);font-size:13.5px;line-height:1.5}
+
+/* Stats */
+.stats{
+  margin:12px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:10px;
+  max-width:980px;
+}
+.stat{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:10px 10px 9px;
+  background:linear-gradient(180deg, rgba(17,17,17,.02), rgba(17,17,17,.00));
+}
+.stat .n{font-size:22px;font-weight:650;letter-spacing:-.02em}
+.stat .l{margin-top:4px;color:rgba(17,17,17,.65);font-size:11px;letter-spacing:.10em;text-transform:uppercase}
+
+/* Sticky tabs (below intro) */
+.tabWrap{
+  position:sticky;
+  top:88px;
+  z-index:60;
+  padding:10px 0 10px;
+  background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.88));
+  backdrop-filter:saturate(140%) blur(10px);
+  border-top:1px solid rgba(17,17,17,.06);
+  border-bottom:1px solid rgba(17,17,17,.06);
+}
+.tabs{
+  max-width:980px;margin:0 auto;
+  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;
+  background:rgba(255,255,255,.88);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:6px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.tab{
+  border:none;background:transparent;
+  padding:8px 12px;border-radius:999px;
+  font-size:11.5px;letter-spacing:.10em;text-transform:uppercase;
+  color:rgba(17,17,17,.75);
+  cursor:pointer;
+  transition:background .2s ease, color .2s ease;
+}
+.tab.active{background:#111;color:#fff}
+
+
+
+
+/* anchors offset for sticky UI */
+#top{scroll-margin-top:120px;}
+.panel{scroll-margin-top:120px;}
+
+
+/* Global sticky tabs (available inside every section without scrolling back) */
+.globalTabWrap{
+  position:fixed;
+  top:88px;
+  left:0; right:0;
+  z-index:75;
+  padding:10px 0 10px;
+  background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.88));
+  backdrop-filter:saturate(140%) blur(10px);
+  border-top:1px solid rgba(17,17,17,.06);
+  border-bottom:1px solid rgba(17,17,17,.06);
+  display:none;
+}
+.globalTabWrap .tabs{max-width:980px;}
+@media (max-width:980px){
+  .globalTabWrap{top:84px}
+}
+
+/* Full-page sections - GÜNCELLENME */
+.deck{
+  background:var(--paper);
+  color:var(--ink2);
+  scroll-snap-type:y mandatory;
+  padding-top:0px;
+}
+.panel{
+  min-height:100vh;
+  height:auto;
+  scroll-snap-align:start;
+  display:flex;
+  align-items:stretch;
+  border-bottom:1px solid rgba(17,17,17,.06);
+  padding:12px 0;
+}
+.panelInner{
+  max-width:1180px;
+  margin:0 auto;
+  width:100%;
+  padding:18px 22px 18px;
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  grid-template-rows: auto 1fr;
+  gap:14px; /* 18px'ten 14px'e düşürüldü */
+  align-items:start; /* center'dan start'a değişti */
+}
+
+
+
+.panelHeader{
+  padding-top:6px;
+}
+@media (max-width:980px){
+  .panelHeader{flex-direction:column; align-items:flex-start}
+}
+
+/* Panel header (moves with each section) */
+.panelHeader{
+  grid-column: 1 / -1;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+}
+.panelHeader .hTitle{
+  font-size:12px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(17,17,17,.55);
+}
+.panelHeader .hHint{
+  font-size:12px;
+  color:rgba(17,17,17,.55);
+  letter-spacing:.02em;
+}
+.backToTop{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(17,17,17,.10);
+  background:rgba(17,17,17,.04);
+  color:rgba(17,17,17,.65);
+  font-size:11px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  text-decoration:none;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.backToTop:hover{
+  background:rgba(17,17,17,.08);
+  color:rgba(17,17,17,.85);
+}
+
+/* Left media - GÜNCELLENME */
+.media{
+  grid-row:2;
+  position:relative;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 18px 60px rgba(0,0,0,.12);
+  background:
+    radial-gradient(900px 460px at 30% 30%, rgba(110,120,255,.25), transparent 62%),
+    radial-gradient(700px 420px at 70% 70%, rgba(140,90,255,.16), transparent 60%),
+    linear-gradient(135deg, rgba(5,7,18,1), rgba(5,7,18,.88));
+  color:#fff;
+  padding:18px 18px; /* 22px 20px'ten azaltıldı */
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  height:100%;
+  min-height:280px; /* minimum yükseklik eklendi */
+  max-height:calc(100vh - 320px); /* maksimum yükseklik eklendi */
+}
+.media.hasImage{background:var(--media-url) center/cover no-repeat;}
+.media::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(90deg, rgba(5,7,18,.90), rgba(5,7,18,.55) 60%, rgba(5,7,18,.35));
+}
+.mediaInner{position:relative; z-index:2; max-width:520px}
+.mediaKicker{
+  display:inline-flex;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.18);
+  font-size:10.5px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+.mediaTitle{margin:10px 0 0;font-size:26px;line-height:1.06;font-weight:560;letter-spacing:-.02em;} /* 30px'ten 26px'e */
+.mediaText{margin:8px 0 0;color:rgba(255,255,255,.82);line-height:1.5;font-size:13px;} /* 13.5px'ten 13px'e */
+
+/* Right content - GÜNCELLENME */
+.content{
+  grid-row:2;
+  border-radius:24px;
+  border:1px solid var(--line);
+  background:#fff;
+  box-shadow:0 18px 60px rgba(0,0,0,.08);
+  padding:16px 16px 14px; /* 18px'ten 16px'e azaltıldı */
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  max-height:calc(100vh - 320px); /* maksimum yükseklik eklendi */
+  overflow-y:auto;
+}
+.contentTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.badge{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  padding:7px 10px;border-radius:999px;
+  border:1px solid var(--line);
+  color:rgba(17,17,17,.65);
+  background:rgba(17,17,17,.04);
+  white-space:nowrap;
+}
+.content h3{margin:0;font-size:18px;font-weight:680;letter-spacing:-.01em;} /* 20px'ten 18px'e */
+.content p{margin:8px 0 0;color:var(--muted2);line-height:1.5;font-size:13px;max-width:70ch;} /* 13.5px'ten 13px'e */
+
+/* Feature grid - GÜNCELLENME */
+.features{
+  margin-top:12px; /* 14px'ten 12px'e */
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:10px; /* 12px'ten 10px'a */
+}
+.feature{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:10px 10px 9px; /* 12px'ten 10px'a */
+  background:linear-gradient(180deg, rgba(17,17,17,.02), rgba(17,17,17,.00));
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+.feature:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(0,0,0,.07)}
+.feature .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(17,17,17,.55)}
+.feature .h{margin:6px 0 0;font-size:13.5px;font-weight:680;letter-spacing:-.01em;} /* 14px'ten 13.5px'e, margin 7px'ten 6px'a */
+.feature .d{margin:6px 0 0;font-size:12.5px;line-height:1.45;color:rgba(17,17,17,.70)} /* 13px'ten 12.5px'e, margin 7px'ten 6px'a */
+
+/* Panel bottom pills */
+.pills{margin-top:auto; padding-top:10px; display:flex;gap:8px;flex-wrap:wrap} /* padding 12px'ten 10px'a */
+.pillMini{
+  font-size:10px;letter-spacing:.10em;text-transform:uppercase;
+  padding:6px 8px;border-radius:999px;
+  border:1px solid rgba(17,17,17,.10);
+  background:rgba(17,17,17,.04);
+  color:rgba(17,17,17,.65)
+}
+
+/* Footer */
+.footerRow{
+  background:var(--paper);
+  color:rgba(17,17,17,.55);
+  font-size:12px;
+  border-top:1px solid rgba(17,17,17,.08);
+}
+.footerInner{
+  max-width:1180px;margin:0 auto;padding:14px 22px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+
+/* Reveal */
+.reveal{opacity:0; transform:translateY(10px); transition:opacity .55s ease, transform .55s ease;}
+.reveal.in{opacity:1; transform:none;}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1; transform:none; transition:none;}
+}
+
+/* responsive */
+@media (max-width:980px){
+  .hero{padding:100px 20px 20px}
+  .heroInner{grid-template-columns:1fr;align-items:start;gap:24px;}
+  .hero h1{font-size:36px}
+  .heroCard{min-height:280px;}
+  .heroInfo{margin-top:18px;padding:16px 18px;}
+  .heroText{font-size:13px;}
+  .stats{grid-template-columns:1fr}
+  .tabWrap{top: 84px; padding: 10px 20px;}
+  .globalTabWrap{top:84px;z-index:50}
+  .panel{height:auto;min-height:auto;padding:18px 0}
+  .panelInner{grid-template-columns:1fr}
+  .media{min-height:220px;height:auto;max-height:none;}
+  .content{height:auto;min-height:unset;max-height:none;}
+  .features{grid-template-columns:1fr}
+  .menuHeader{width:280px}
+  .menuBody{width:280px}
+}
+@media (max-width:640px){
+  .menuHeader{width:85vw;max-width:320px}
+  .menuBody{width:85vw;max-width:320px}
+  .tabWrap{padding:12px 0}
+  .tabs{padding:6px;gap:6px}
+  .tab{padding:8px 11px;font-size:11px}
+}
+
+/* --- Menu Overlay --- */
+.menuOverlay{
+  position:fixed;inset:0;
+  background:rgba(5,7,18,.75);
+  backdrop-filter:blur(4px);
+  color:#111;
+  display:none;z-index:9999;
+}
+.menuOverlay.open{display:block}
+.menuHeader{
+  position:absolute;
+  left:0;top:0;
+  width:320px;
+  height:72px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;border-bottom:1px solid #e6e6e6;
+  background:#f7f7f7;
+}
+.menuHeader .brand{font-weight:700;letter-spacing:.04em;text-decoration:none;color:inherit;}
+.menuHeader .close{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;
+  border:1px solid #e6e6e6;background:#fff;
+  font-size:22px;line-height:1;
+}
+.menuBody{
+  position:absolute;
+  left:0;top:72px;bottom:0;
+  width:320px;
+  background:#f7f7f7;
+  display:flex;
+  flex-direction:column;
+}
+.menuLeft{padding:28px;flex:1;}
+.menuLeft a{
+  display:block;text-decoration:none;color:#111;
+  font-size:18px;font-weight:600;padding:12px 0;
+}
+.menuLeft a:hover{opacity:.75}
+.menuLeft .lang{
+  margin-top:22px;font-size:14px;color:#444;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.menuRight{display:none;}
+
+
+/* i18n toggle */
+body[data-lang="en"] .tr{display:none !important;}
+body[data-lang="tr"] .en{display:none !important;}
+
+
+
+/* --- Visual polish: Menu Right + Footer --- */
+.menuRight{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:18px;
+  padding:22px 26px;
+  box-shadow:0 18px 60px rgba(0,0,0,.10);
+  align-self:start;
+}
+.menuRight h3{font-size:22px; letter-spacing:-.01em;}
+.menuRight p{font-size:15px; color:rgba(17,17,17,.70);}
+
+.footerRow{
+  padding-top:14px;
+  color:rgba(17,17,17,.60);
+}
+.footerRow a{
+  color:inherit;
+  text-decoration:none;
+}
+.footerRow a:hover{
+  text-decoration:underline;
+}
+
+
+
+
+/* --- what-we-do: prevent grid overlap on 1-column layouts --- */
+@media (max-width: 1200px){
+  .panelInner{
+    grid-template-columns:1fr !important;
+    grid-template-rows:auto auto auto !important;
+    grid-auto-flow:row !important;
+  }
+  .media{grid-row:auto !important;}
+  .content{grid-row:auto !important;}
+}
+
+</style>
+</head>
+<body>
+<div id="top"></div>
+<div class="topbar">
+<div aria-label="Menu" class="pill" id="menuTrigger">
+<div class="hamburger"><span></span><span></span><span></span></div>
+<a class="brandLink" href="index.html" onclick="event.stopPropagation()">OPG</a>
+</div>
+<div aria-label="Language toggle" class="pill langToggle" role="button" tabindex="0">EN / TR</div>
+</div>
+<section class="landing" id="landing">
+<section class="hero">
+<div class="heroInner">
+<div class="reveal heroSlideL" style="display: flex; flex-direction: column; justify-content: center;">
+<h1><span class="en">What we do</span><span class="tr">Ne yapıyoruz</span></h1>
+<p><span class="en">We take end-to-end ownership of complex change — deciding what stays in-house, what we orchestrate through partners, and what we productize for repeatability.</span><span class="tr">Karmaşık dönüşümlerde uçtan uca sahiplik alırız; hangi alanların kurum içinde yönetileceğini, hangilerinin orkestre edileceğini ve hangilerinin ürünleştirileceğini netleştiririz.</span></p>
+<div class="heroInfo">
+<div class="heroTag"><span class="en">MODEL</span><span class="tr">MODEL</span></div>
+<div class="heroText"><span class="en"><strong>In-house</strong> — when control and governance are non-negotiable<br/><strong>Partner Hub</strong> — when scale or specialist depth is required<br/><strong>Products</strong> — when repeatability creates speed and consistency</span><span class="tr"><strong>In-house</strong> — kontrol ve yönetişimin vazgeçilmez olduğu alanlar<br/><strong>Partner Hub</strong> — ölçek veya uzmanlık gerektiren durumlar<br/><strong>Ürünler</strong> — tekrarlanabilirliğin hız kazandırdığı noktalar</span></div>
+</div>
+</div>
+<div class="heroCard reveal heroSlideR" data-img="assets/hero5">
+</div>
+</div>
+</section>
+<div aria-hidden="true" class="heroTicker">
+<div class="tickerTrack">
+<span>LISTEN</span><i> • </i><span>SHAPE</span><i> • </i><span>OWN</span><i> • </i>
+<span>LISTEN</span><i> • </i><span>SHAPE</span><i> • </i><span>OWN</span><i> • </i>
+<span>LISTEN</span><i> • </i><span>SHAPE</span><i> • </i><span>OWN</span><i> • </i>
+<span>LISTEN</span><i> • </i><span>SHAPE</span><i> • </i><span>OWN</span><i> • </i>
+</div>
+</div>
+<section class="intro">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="en">WELCOME TO ONE POINT GLOBAL</span><span class="tr">ONE POINT GLOBAL'E HOŞ GELDİNİZ</span></div>
+    <div class="title reveal"><span class="en">Three mechanisms. One accountable owner.</span><span class="tr">Üç mekanizma. Tek sorumlu sahiplik.</span></div>
+    <div class="sub reveal"><span class="en">Each layer stands on its own, yet all are governed as a single system.</span><span class="tr">Her mekanizma kendi başına güçlüdür; tamamı tek bir sistem anlayışıyla yönetilir.</span></div>
+    <div class="stats">
+      <div class="stat reveal">
+        <div class="n">25+</div>
+        <div class="l"><span class="en">Domain exp.</span><span class="tr">Domain exp.</span></div>
+      </div>
+      <div class="stat reveal">
+        <div class="n">3</div>
+        <div class="l"><span class="en">Accountable owner</span><span class="tr">Sorumlu sahiplik</span></div>
+      </div>
+      <div class="stat reveal">
+        <div class="n">1</div>
+        <div class="l">Accountability layer</div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+</section>
+<div aria-label="Sections" class="tabWrap" id="tabWrap">
+  <div class="tabs">
+    <button class="tab" data-target="#inhouse"><span class="en">In-house</span><span class="tr">In-house</span></button>
+    <button class="tab" data-target="#hub"><span class="en">Partner Hub</span><span class="tr">Partner Hub</span></button>
+    <button class="tab" data-target="#products"><span class="en">Products</span><span class="tr">Ürünler</span></button>
+  </div>
+</div>
+<section class="deck" id="deck">
+<!-- In-house -->
+<div class="panel" data-key="inhouse" id="inhouse">
+<div class="panelInner">
+<div class="panelHeader">
+<div class="hTitle"><span class="en">IN-HOUSE</span><span class="tr">IN-HOUSE</span></div>
+<a href="#top" class="backToTop"><span class="en">↑ Back to top</span><span class="tr">↑ Başa dön</span></a>
+</div>
+<div class="media" data-img="assets/whatwedo-inhouse">
+<div class="mediaInner">
+<div class="mediaKicker">In-house</div>
+<div class="mediaTitle"><span class="en">Control where decisions truly matter.</span><span class="tr">Kararların gerçekten kritik olduğu yerde kontrol.</span></div>
+<div class="mediaText"><span class="en">We step in directly when architecture, governance, or long-term risk cannot be delegated.</span><span class="tr">Mimari, yönetişim ya da uzun vadeli risklerin devredilemediği durumlarda doğrudan sorumluluk alırız.</span></div>
+</div>
+</div>
+<div class="content">
+<div class="contentTop">
+<div>
+<h3><span class="en">In-house capabilities</span><span class="tr">In-house yetkinlikleri</span></h3>
+<p><span class="en">Senior-led work focused on decisions — not just delivery — so accountability holds over time.</span><span class="tr">Yalnızca teslimata değil, kararlara odaklanan; sorumluluğu zaman içinde koruyan kıdemli ekip çalışmaları.</span></p>
+</div>
+<div class="badge"><span class="en">Delivered directly</span><span class="tr">Doğrudan yürütülür</span></div>
+</div>
+<div class="features">
+<div class="feature">
+<div class="h"><span class="en">Platform &amp; Architecture</span><span class="tr">Platform &amp; Mimari</span></div>
+<div class="d"><span class="en">Integration, cloud-native foundations, and mission-critical system design for complex environments.</span><span class="tr">Karmaşık yapılar için entegrasyon, bulut-yerel altyapılar ve kritik sistem mimarileri.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">Technology Strategy &amp; Governance</span><span class="tr">Teknoloji Stratejisi &amp; Yönetişim</span></div>
+<div class="d"><span class="en">Decision forums, roadmaps, architecture governance, and operating model alignment.</span><span class="tr">Karar mekanizmaları, yol haritaları, mimari yönetişim ve operasyonel model uyumu.</span></div>
+</div><div class="feature"><div class="h"><span class="en">Digital Transformation &amp; Strategic BPR Ownership</span><span class="tr">Dijital Dönüşüm &amp; Stratejik BPR Sahipliği</span></div><div class="d"><span class="en">End-to-end ownership of digital transformation and business process redesign — from strategy to execution.</span><span class="tr">Stratejiden uygulamaya uzanan dijital dönüşüm ve iş süreçleri yeniden tasarımında uçtan uca sahiplik.</span></div></div>
+<div class="feature">
+<div class="h"><span class="en">Data, AI &amp; Automation Enablement</span><span class="tr">Veri, Yapay Zekâ &amp; Otomasyon</span></div>
+<div class="d"><span class="en">Data foundations and AI-ready design enabling safe, scalable automation.</span><span class="tr">Güvenli ve ölçeklenebilir otomasyon için veri temelleri ve yapay zekâya hazır tasarım.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">Selective Delivery Ownership</span><span class="tr">Seçici Teslimat Sahipliği</span></div>
+<div class="d"><span class="en">We take direct responsibility for well-scoped initiatives when ownership is critical.</span><span class="tr">Sahipliğin kritik olduğu, kapsamı net tanımlanmış girişimlerde doğrudan sorumluluk alırız.</span></div>
+</div>
+</div>
+<div class="pills">
+<span class="pillMini"><span class="en">Governance</span><span class="tr">Yönetişim</span></span><span class="pillMini"><span class="en">Architecture</span><span class="tr">Mimari</span></span><span class="pillMini"><span class="en">Critical decisions</span><span class="tr">Kritik kararlar</span></span><span class="pillMini"><span class="en">Accountability</span><span class="tr">Sorumluluk</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Hub -->
+<div class="panel" data-key="hub" id="hub">
+<div class="panelInner">
+<div class="panelHeader">
+<div class="hTitle"><span class="en">PARTNER HUB</span><span class="tr">PARTNER HUB</span></div>
+<a href="#top" class="backToTop"><span class="en">↑ Back to top</span><span class="tr">↑ Başa dön</span></a>
+</div>
+<div class="media" data-img="assets/whatwedo-hub">
+<div class="mediaInner">
+<div class="mediaKicker">Partner hub</div>
+<div class="mediaTitle"><span class="en">Not a network. An orchestrated coalition.</span><span class="tr">Bir network değil. Orkestre edilmiş bir yapı.</span></div>
+<div class="mediaText"><span class="en">Specialists operate under one cadence, one risk view, and one decision authority.</span><span class="tr">Uzmanlar tek bir ritim, tek bir risk bakışı ve tek bir karar otoritesi altında çalışır.</span></div>
+</div>
+</div>
+<div class="content">
+<div class="contentTop">
+<div>
+<h3><span class="en">Partner Hub mechanisms</span><span class="tr">Partner Hub mekanizmaları</span></h3>
+<p><span class="en">We assemble the right partners around the work and keep delivery coherent end-to-end.</span><span class="tr">Doğru partnerleri ihtiyaca göre bir araya getirir, teslimatı uçtan uca bütünlükle yönetiriz.</span></p>
+</div>
+<div class="badge"><span class="en">Orchestrated</span><span class="tr">Orkestre edilir</span></div>
+</div>
+<div class="features">
+<div class="feature">
+<div class="h"><span class="en">Curated Specialists</span><span class="tr">Curated Specialists</span></div>
+<div class="d"><span class="en">Engineering, design, security, data, change — introduced only when value is created.</span><span class="tr">Mühendislikten güvenliğe, yalnızca gerçek değer yarattığında dahil edilen uzmanlar.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">Single Governance Layer</span><span class="tr">Single Governance Layer</span></div>
+<div class="d"><span class="en">One cadence, one priority set, one decision record.</span><span class="tr">Tek yönetişim yapısı, tek öncelik seti ve tek karar kaydı.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">Interoperable Delivery</span><span class="tr">Interoperable Delivery</span></div>
+<div class="d"><span class="en">Clear interfaces and ownership boundaries defined upfront.</span><span class="tr">Baştan net şekilde tanımlanmış arayüzler ve sorumluluk sınırları.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">Vendor-neutral by Design</span><span class="tr">Vendor-neutral by Design</span></div>
+<div class="d"><span class="en">Outcome-led, not affiliation-led.</span><span class="tr">Outcome-led, not affiliation-led.</span></div>
+</div>
+</div>
+<div class="pills">
+<span class="pillMini"><span class="en">Coalition</span><span class="tr">Koalisyon</span></span><span class="pillMini"><span class="en">Cadence</span><span class="tr">Ritim</span></span><span class="pillMini"><span class="en">Risk visibility</span><span class="tr">Risk görünürlüğü</span></span><span class="pillMini"><span class="en">Vendor-neutral</span><span class="tr">Tedarikçi bağımsız</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Products -->
+<div class="panel" data-key="products" id="products">
+<div class="panelInner">
+<div class="panelHeader">
+<div class="hTitle"><span class="en">PRODUCTS</span><span class="tr">ÜRÜNLER</span></div>
+<a href="#top" class="backToTop"><span class="en">↑ Back to top</span><span class="tr">↑ Başa dön</span></a>
+</div>
+<div class="media" data-img="assets/whatwedo-products">
+<div class="mediaInner">
+<div class="mediaKicker"><span class="en">Products</span><span class="tr">Ürünler</span></div>
+<div class="mediaTitle"><span class="en">Repeatability with discipline.</span><span class="tr">Disiplinli tekrarlanabilirlik.</span></div>
+<div class="mediaText"><span class="en">When needs repeat, products create speed while maintaining control.</span><span class="tr">İhtiyaçlar tekrar ettiğinde, ürünler kontrolü elde tutarak hız sağlar.</span></div>
+</div>
+</div>
+<div class="content">
+<div class="contentTop">
+<div>
+<h3><span class="en">Products</span><span class="tr">Ürünler</span></h3>
+<p><span class="en">Modular products designed to turn data into decisions, enabling scale, clarity, and operational consistency.</span><span class="tr">Veriyi karara dönüştüren; ölçeklenebilirlik, netlik ve operasyonel tutarlılık sağlayan modüler ürünler.</span></p>
+</div>
+<div class="badge"><span class="en">Reusable</span><span class="tr">Tekrarlanabilir</span></div>
+</div>
+<div class="features">
+<div class="feature">
+<div class="h"><span class="en">One Point Loyalty</span><span class="tr">One Point Loyalty</span></div>
+<div class="d"><span class="en">An ecosystem-first loyalty layer connecting brands, benefits, and governance.</span><span class="tr">Markaları, faydaları ve yönetişimi bir araya getiren ekosistem odaklı sadakat katmanı.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">BESIQ</span><span class="tr">BESIQ</span></div>
+<div class="d"><span class="en">A structured foundation for benefits, membership, and plan operations.</span><span class="tr">Fayda, üyelik ve plan operasyonları için yapılandırılmış altyapı.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">AI Agent Suite</span><span class="tr">AI Agent Suite</span></div>
+<div class="d"><span class="en">A pragmatic agent layer designed for explainable and measurable service journeys.</span><span class="tr">Açıklanabilir ve ölçülebilir servis yolculukları için tasarlanmış yapay zekâ ajan katmanı.</span></div>
+</div>
+<div class="feature">
+<div class="h"><span class="en">Decision Engine</span><span class="tr">Decision Engine</span></div>
+<div class="d"><span class="en">A data-driven decision, recommendation, and action engine that turns insights into consistent business outcomes.</span><span class="tr">Veriye dayalı karar, öneri ve aksiyon üreten; içgörüleri tutarlı iş çıktılarına dönüştüren karar motoru.</span></div>
+</div>
+</div>
+<div class="pills">
+<span class="pillMini"><span class="en">Ecosystem</span><span class="tr">Ekosistem</span></span><span class="pillMini"><span class="en">Governance</span><span class="tr">Yönetişim</span></span><span class="pillMini"><span class="en">Integration-ready</span><span class="tr">Entegrasyona hazır</span></span><span class="pillMini"><span class="en">Measurable</span><span class="tr">Ölçülebilir</span></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div style="background:var(--paper);padding:20px 0;text-align:center;">
+<a href="#top" class="backToTop"><span class="en">↑ Back to top</span><span class="tr">↑ Başa dön</span></a>
+</div>
+<div class="footerRow">
+<div class="footerInner">
+<div>© One Point Global</div>
+<div>hello@onepoint.global</div>
+</div>
+</div>
+<!-- Menu Overlay -->
+<div class="menuOverlay" id="menu">
+<div class="menuHeader">
+<a class="brand" href="index.html">OPG</a>
+<div aria-label="Close menu" class="close" id="menuClose">×</div>
+</div>
+<div class="menuBody">
+<nav aria-label="Menu" class="menuLeft">
+<a class="toTop" href="#top" onclick="closeMenu()"><span class="en">Home</span><span class="tr">Ana sayfa</span></a>
+<a href="about.html" onclick="closeMenu()"><span class="en">About</span><span class="tr">Hakkımızda</span></a>
+<div class="lang">EN / TR</div>
+</nav>
+<div class="menuRight">
+<h3>One accountability. Multiple mechanisms.</h3>
+<p>In-house capability, partner hub, and products — assembled around the work, governed as one system.</p>
+</div>
+</div>
+</div>
+<script>
+/* menu */
+const menu = document.getElementById('menu');
+const trigger = document.getElementById('menuTrigger');
+const closeBtn = document.getElementById('menuClose');
+function openMenu(){ menu.classList.add('open'); }
+function closeMenu(){ menu.classList.remove('open'); }
+trigger?.addEventListener('click', openMenu);
+closeBtn?.addEventListener('click', closeMenu);
+menu?.addEventListener('click', (e)=>{ if(e.target === menu) closeMenu(); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
+
+
+
+/* ensure top navigation works */
+document.querySelectorAll('a[href="#top"]').forEach(a=>{
+  a.addEventListener('click', (e)=>{
+    e.preventDefault();
+    document.getElementById('top')?.scrollIntoView({behavior:'smooth', block:'start'});
+    
+    // SORUN 3 ÇÖZÜMÜ: Back to top'a tıklandığında tab seçimini kaldır
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+  });
+});
+
+/* tabs -> scroll to full-page panels */
+function wireTabs(selector){
+  document.querySelectorAll(selector).forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.querySelector(btn.getAttribute('data-target'));
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+wireTabs('.tab');
+
+
+/* keep tab state in sync while scrolling */
+const sectionObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = '#' + e.target.id;
+      document.querySelectorAll('[data-target]').forEach(t=>{
+        const isActive = t.getAttribute('data-target') === id;
+        if(t.classList.contains('tab') || t.classList.contains('miniTab')){
+          t.classList.toggle('active', isActive);
+        }
+      });
+    }
+  });
+},{threshold:0.6});
+['inhouse','hub','products'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) sectionObserver.observe(el);
+});
+
+/* Landing bölümü observer'ı - en üstte iken tab seçimlerini kaldır */
+const landingObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      // Landing bölümü görünüyorsa tüm tab seçimlerini kaldır
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+    }
+  });
+},{threshold:0.3}); // Landing'in %30'u görünürse tetikle
+
+const landingSection = document.getElementById('landing');
+if(landingSection){
+  landingObserver.observe(landingSection);
+}
+
+/* image loader helper */
+const exts = ["", ".jpg", ".jpeg", ".png", ".webp", ".JPG", ".JPEG", ".PNG", ".WEBP"];
+function tryLoad(basePath, onSuccess){
+  let i = 0;
+  const img = new Image();
+  const attempt = () => {
+    if(i >= exts.length) return;
+    const src = basePath + exts[i++];
+    img.onload = () => onSuccess(src);
+    img.onerror = attempt;
+    img.src = src;
+  };
+  attempt();
+}
+document.querySelectorAll('.media').forEach(media=>{
+  const base = media.getAttribute('data-img');
+  if(!base) return;
+  tryLoad(base, (src)=>{
+    media.style.setProperty('--media-url', `url("${src}")`);
+    media.classList.add('hasImage');
+  });
+});
+
+/* load heroCard image */
+document.querySelectorAll('.heroCard[data-img]').forEach(card=>{
+  const base = card.getAttribute('data-img');
+  if(!base) return;
+  tryLoad(base, (src)=>{
+    card.style.setProperty('--herocard-url', `url("${src}")`);
+    card.classList.add('hasImage');
+  });
+});
+
+/* reveal */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+
+/* show global tabs only when the landing sticky tabs are out of view (prevents duplication) */
+const globalTabWrap = document.getElementById('globalTabWrap');
+const landingTabs = document.querySelector('.tabWrap');
+
+if(globalTabWrap && landingTabs){
+  const vis = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      // if landing tabs are visible, hide global; otherwise show global
+      globalTabWrap.style.display = e.isIntersecting ? 'none' : 'block';
+    });
+  }, {threshold: 0.15});
+  vis.observe(landingTabs);
+} else if(globalTabWrap){
+  globalTabWrap.style.display = 'block';
+}
+
+
+
+/* i18n */
+(function(){
+  const toggle = document.querySelector('.langToggle');
+  function setLang(lang){
+    document.body.setAttribute('data-lang', lang);
+    try{ localStorage.setItem('lang', lang); }catch(e){}
+  }
+  let saved = 'en';
+  try{
+    saved = localStorage.getItem('lang') || saved;
+  }catch(e){}
+  if(!saved){
+    const nav = (navigator.language || '').toLowerCase();
+    saved = nav.startsWith('tr') ? 'tr' : 'en';
+  }
+  setLang(saved);
+
+  function flip(){
+    const cur = document.body.getAttribute('data-lang') || 'en';
+    setLang(cur === 'en' ? 'tr' : 'en');
+  }
+  if(toggle){
+    toggle.addEventListener('click', flip);
+    toggle.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(); }
+    });
+  }
+})();
+
+</script>
+</body>
+</html>
